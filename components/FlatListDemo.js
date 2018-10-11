@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import {
-    View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert, Platform, TouchableHighlight
+    View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert, TouchableHighlight, Platform
 } from 'react-native';
 import SwipeOut from 'react-native-swipeout';
 import flatListData from '../data/flatListData';
@@ -127,7 +127,7 @@ export default class FlatListDemo extends Component {
 
     render() {
         return (
-            <View style={{flex: 1, marginTop: Platform.OS == 'ios' ? 30 : 0}}>
+            <View style={{flex: 1, marginTop: Platform.OS === 'ios' ? 30 : 100}}>
 
                 <View style={{
                     backgroundColor: 'tomato',

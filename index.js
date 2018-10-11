@@ -11,9 +11,10 @@ import TouchScreenDemo2 from './components/TouchScreenDemo2';
 import ScrollViewVertical from './components/ScrollViewVertical';
 import ViewPagerAndroidDemo from './components/ViewPagerAndroidDemo';
 import FlatListDemo from './components/FlatListDemo';
+import FlatListHorizontal from './components/FlatListHorizontal';
 import {name as appName} from './app.json';
 
 
 // AppRegistry.registerComponent(appName, () => App);
 // AppRegistry.registerComponent(appName, () => Splash);
-AppRegistry.registerComponent(appName, () => FlatListDemo);
+AppRegistry.registerComponent(appName, () => FlatListHorizontal);
