@@ -8,13 +8,15 @@
   },
   "dependencies": {
     "@babel/runtime": "^7.1.2",
+    "@types/react-native": "^0.57.4",
     "random-string": "^0.2.0",
     "react": "16.5.0",
     "react-native": "0.57.1",
     "react-native-button": "^2.3.0",
     "react-native-modalbox": "^1.6.0",
     "react-native-swipeout": "^2.3.6",
-    "react-native-vector-icons": "^6.0.2"
+    "react-native-vector-icons": "^6.0.2",
+    "react-navigation": "^2.18.0"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",

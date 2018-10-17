@@ -1,13 +1,14 @@
 import React, {Component} from 'react';
 import {
-    View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert, TouchableHighlight, Platform
+    View, Text, Image, FlatList, StyleSheet, TouchableOpacity, Alert, TouchableHighlight, Platform, RefreshControl
 } from 'react-native';
 import SwipeOut from 'react-native-swipeout';
 import flatListData from '../data/flatListData';
+import {getUsers} from "../networking/Server";
 import AddModel from './AddModel';
 import EditModel from './EditModel';
 
-class FlatListItem extends Component {
+class RowItem extends Component {
     constructor(props) {
         super(props);
         this.state = {
@@ -82,13 +83,13 @@ class FlatListItem extends Component {
                             flexDirection: 'row'
                         }}>
                             <Image style={styles.imageStyle}
-                                   source={{uri: this.props.item.imageUrl}}/>
+                                   source={{uri: this.props.item.avatar_url}}/>
                             <View style={{
                                 flexDirection: 'column',
                                 justifyContent: 'center'
                             }}>
-                                <Text style={styles.textStyle}>{this.props.item.name}</Text>
-                                <Text style={styles.textStyle}>{this.props.item.description}</Text>
+                                <Text style={styles.textStyle}>{this.props.item.login}</Text>
+                                <Text style={styles.textStyle}>{this.props.item.type}</Text>
                                 {/*<Text>Vu Huu Duan</Text>*/}
                             </View>
 
@@ -102,14 +103,36 @@ class FlatListItem extends Component {
     }
 }
 
-export default class FlatListDemo extends Component {
+export default class GetRequestAPI extends Component {
     constructor(props) {
         super(props);
         this.state = {
             deleteRowKey: null,  // Key cua item bi xoa
+            refreshing: false,  // khong show loading khi khoi tao
+            userFromServer: [],
         }
         // Note!
         this._onPressAdd = this._onPressAdd.bind(this);
+    }
+
+    componentDidMount() {
+        // Sau khi component duoc render thi se lay data ve do len
+        this.refreshDataFromServer();
+    }
+
+    refreshDataFromServer = () => {
+        this.setState({refreshing: true});
+        getUsers().then((users) => {
+            this.setState({userFromServer: users});
+            this.setState({refreshing: false});
+        }).catch((error) => {
+            this.setState({userFromServer: []});
+            this.setState({refreshing: false});
+        });
+    }
+
+    onRefresh = () => {
+        this.refreshDataFromServer();
     }
 
     refreshFlatList = (activeKey) => {
@@ -152,21 +175,26 @@ export default class FlatListDemo extends Component {
 
                 <FlatList
                     ref={"flatList"}  // dat ten cho doi tuong de noi khac co the goi: this.props.flatList.???
-                    data={flatListData}
+                    data={this.state.userFromServer}
                     renderItem={({item, index}) => {
                         // item la object trong mang flatListData
                         // console.log(`Item = ${JSON.stringify(item)}, index = ${index}`);
                         return (
                             // tra ve jsx cua tung compomnent (row trong list)
-                            <FlatListItem
+                            <RowItem
                                 item={item}
                                 index={index}
                                 parentFlatList={this}  // delete row item
                             >
 
-                            </FlatListItem>
+                            </RowItem>
                         );
-                    }}>
+                    }}
+                    keyExtractor={(item, index) => item.node_id}
+                    refreshControl={
+                        <RefreshControl refreshing={this.state.refreshing}
+                                        onRefresh={this.onRefresh}/>
+                    }>
 
                 </FlatList>
 
